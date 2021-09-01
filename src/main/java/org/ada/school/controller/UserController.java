@@ -4,6 +4,7 @@ import org.ada.school.dto.UserDto;
 import org.ada.school.model.User;
 import org.ada.school.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -39,6 +41,16 @@ public class UserController
     public ResponseEntity<User> findById( @PathVariable String id )
     {
         return ResponseEntity.ok( userService.findById( id ) );
+    }
+
+    @GetMapping( "/nameOrLastName/{queryText}" )
+    public ResponseEntity<List<User>> findUsersWithNameOrLastNameLike(@PathVariable String queryText){
+        return ResponseEntity.ok( userService.findUsersWithNameOrLastNameLike( queryText ) );
+    }
+
+    @GetMapping("/createdAfter/{startDate}")
+    public ResponseEntity<List<User>> findUsersCreatedAfter( @PathVariable @DateTimeFormat(pattern="dd-MM-yyyy") Date startDate){
+        return ResponseEntity.ok( userService.findUsersCreatedAfter( startDate ) );
     }
 
 
